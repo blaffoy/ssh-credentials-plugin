@@ -51,7 +51,7 @@ public class SSHAgentAuthSock extends BaseStandardCredentials {
     /**
      * The environment variable which resolves the path of the auth sock
      */
-    private transient String authSockEnvVar = "SSH_AUTH_SOCK";
+    private String authSockEnvVar;
 
     /**
      * Constructor for stapler.
@@ -64,7 +64,7 @@ public class SSHAgentAuthSock extends BaseStandardCredentials {
     public SSHAgentAuthSock(CredentialsScope scope, String id, String authSockEnvVar, String description) {
         super(scope, id, description);
         this.authSockEnvVar = authSockEnvVar;
-        LOGGER.info("INSTANTIATING");
+        LOGGER.info("constructed and set AuthSockEnvVar " + authSockEnvVar);
     }
 
     /**
@@ -86,7 +86,6 @@ public class SSHAgentAuthSock extends BaseStandardCredentials {
          */
         @Override
         public String getDisplayName() {
-            LOGGER.info("Returning DisplayName of SSHAgentAuthSock");
             return Messages.SSHAgentAuthSock_DisplayName();
         }
 
