@@ -61,6 +61,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
  * A simple username / password for use with SSH connections.
  */
 public class BasicSSHUserPrivateKey extends BaseSSHUser implements SSHUserPrivateKey {
+    private static final Logger LOGGER = Logger.getLogger(BasicSSHUserPrivateKey.class.getName());
 
     /**
      * Ensure consistent serialization.
@@ -221,6 +222,7 @@ public class BasicSSHUserPrivateKey extends BaseSSHUser implements SSHUserPrivat
          */
         @Override
         public String getDisplayName() {
+            LOGGER.info("Returning DisplayName of BasicSSHUserPrivateKey");
             return Messages.BasicSSHUserPrivateKey_DisplayName();
         }
 

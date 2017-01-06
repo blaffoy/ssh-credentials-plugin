@@ -24,37 +24,13 @@
 package com.cloudbees.jenkins.plugins.agentauthcredentials.impl;
 
 import com.cloudbees.plugins.credentials.impl.BaseStandardCredentials;
-import com.cloudbees.plugins.credentials.CredentialsProvider;
 import com.cloudbees.plugins.credentials.CredentialsScope;
-import com.cloudbees.plugins.credentials.CredentialsSnapshotTaker;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.NonNull;
-import hudson.DescriptorExtensionList;
 import hudson.Extension;
-import hudson.model.AbstractDescribableImpl;
-import hudson.model.Descriptor;
-import hudson.remoting.Channel;
-import hudson.util.Secret;
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectStreamException;
-import java.io.Serializable;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import jenkins.model.Jenkins;
-import net.jcip.annotations.GuardedBy;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
 import org.jenkins.ui.icon.Icon;
 import org.jenkins.ui.icon.IconSet;
 import org.jenkins.ui.icon.IconType;
-import org.kohsuke.putty.PuTTYKey;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
@@ -63,9 +39,19 @@ import org.kohsuke.stapler.DataBoundConstructor;
 public class SSHAgentAuthSock extends BaseStandardCredentials {
 
     /**
+     * Ensure consistent serialization.
+     */
+    private static final long serialVersionUID = 1L;
+    
+    /**
+     * Our logger
+     */
+    private static final Logger LOGGER = Logger.getLogger(SSHAgentAuthSock.class.getName());
+    
+    /**
      * The environment variable which resolves the path of the auth sock
      */
-    private transient String authSockEnvVar;
+    private transient String authSockEnvVar = "SSH_AUTH_SOCK";
 
     /**
      * Constructor for stapler.
@@ -78,6 +64,7 @@ public class SSHAgentAuthSock extends BaseStandardCredentials {
     public SSHAgentAuthSock(CredentialsScope scope, String id, String authSockEnvVar, String description) {
         super(scope, id, description);
         this.authSockEnvVar = authSockEnvVar;
+        LOGGER.info("INSTANTIATING");
     }
 
     /**
@@ -99,7 +86,8 @@ public class SSHAgentAuthSock extends BaseStandardCredentials {
          */
         @Override
         public String getDisplayName() {
-            return Messages.AgentAuthSock_DisplayName();
+            LOGGER.info("Returning DisplayName of SSHAgentAuthSock");
+            return Messages.SSHAgentAuthSock_DisplayName();
         }
 
         /**
