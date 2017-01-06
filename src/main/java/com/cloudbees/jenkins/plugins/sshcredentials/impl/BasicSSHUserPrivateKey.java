@@ -552,6 +552,62 @@ public class BasicSSHUserPrivateKey extends BaseSSHUser implements SSHUserPrivat
     }
 
     /**
+     * Use a ssh-agent authorisation socket
+     */
+    public static class AgentAuthSockSource extends PrivateKeySource {
+
+        /**
+         * Our logger
+         */
+        private static final Logger LOGGER = Logger.getLogger(AgentAuthSockSource.class.getName());
+
+        /**
+         * When any of the key files was last modified.
+         */
+        private transient volatile long lastModified;
+
+        /**
+         * When we will next try a refresh of the status.
+         */
+        private transient volatile long nextCheckLastModified;
+
+        @DataBoundConstructor
+        public AgentAuthSockSource() {
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @NonNull
+        @Override
+        public List<String> getPrivateKeys() {
+            List<String> keys = new ArrayList<String>();
+            return keys;
+        }
+
+        @Override
+        public long getPrivateKeysLastModified() {
+            return lastModified;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Extension
+        public static class DescriptorImpl extends PrivateKeySourceDescriptor {
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public String getDisplayName() {
+                return Messages.BasicSSHUserPrivateKey_AgentAuthSockSourceDisplayName();
+            }
+        }
+    }
+
+
+    /**
      * @since 1.7
      */
     @Extension
